@@ -199,13 +199,13 @@
       return !_.contains(collection,false); // if find false in array return false 
     }
     return _.reduce(collection,function(notAllTrue,item){
-      if (!notAllTrue){
+      if (!notAllTrue){ // checks to see if all are not true, then returns false if one element dissents
         return false;
       }
-      if (iterator(item)){
+      if (iterator(item)){ // goes through all items in array to see if true
         return true;
       }
-      return false;
+      return false; // otherwise says false
     },true)
   };
 
@@ -213,20 +213,28 @@
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
-    // if (iterator == undefined){
-    //   if (contains(collection,true))return true;
-    //   else return false;
-    // }
     // var someTrue = false;
     // _.each(collection,function(item){
     //   if (iterator(item)) someTrue = true;
     // });
     // return someTrue;
 
-    var someTrue = _.every(collection,function(item){
-      return iterator(item)
-    });
-    return someTrue;
+    // var anyTrue = false;
+
+    // var someTrue = _.every(collection,function(item){
+    //   if (iterator(item))
+    //     anyTrue = true;
+    // });
+    // return someTrue;
+    if (iterator == undefined){ // no function specified
+      return !_.contains(collection,false); // if find false in array return false 
+    }
+    return _.reduce(collection,function(notAllTrue,item){
+      if (iterator(item)){ // goes through all items in array to see if true
+        console.log("iterator(item) == true");
+        return true;
+      }
+    },false)
     
   };
 
@@ -310,12 +318,16 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
-    // check functions input
-    // push input into an array
-    // check if next input matches anything in array
-    // if not return func
-    console.log("called");
-    return func;
+    var memo = {};
+    var slice = Array.prototype.slice;
+    return function(){
+      var args = slice.call(arguments);// make new mutable arguments array
+      if (args in memo){ // present in the memo'd object
+        return memo[args];
+      }else{
+        return memo[args] = func.apply(this,args); // applying the args to the function called
+      }
+    }
   };
 
   // Delays a function for the given number of milliseconds, and then calls
