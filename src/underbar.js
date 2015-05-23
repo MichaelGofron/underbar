@@ -213,13 +213,21 @@
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
-    // go through each element in collection
-    // if any are true then return true else return false
-    var someTrue = false;
-    _.every(collection,function(item){
-      if (iterator(item)) someTrue = true;
+    // if (iterator == undefined){
+    //   if (contains(collection,true))return true;
+    //   else return false;
+    // }
+    // var someTrue = false;
+    // _.each(collection,function(item){
+    //   if (iterator(item)) someTrue = true;
+    // });
+    // return someTrue;
+
+    var someTrue = _.every(collection,function(item){
+      return iterator(item)
     });
     return someTrue;
+    
   };
 
 
@@ -241,14 +249,26 @@
   //   }, {
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
-  _.extend = function(obj) {
+  _.extend = function(obj){
+    _.each(arguments,function(argument){
+      _.each(argument,function(val,key){
+        obj[key] = val;
+      });
+    });
+    return obj;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    _.each(arguments,function(argument){
+      _.each(argument,function(val,key){
+        if (obj[key] == undefined)
+          obj[key] = val;
+      });
+    });
+    return obj;
   };
-
 
   /**
    * FUNCTIONS
@@ -290,6 +310,12 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    // check functions input
+    // push input into an array
+    // check if next input matches anything in array
+    // if not return func
+    console.log("called");
+    return func;
   };
 
   // Delays a function for the given number of milliseconds, and then calls
@@ -299,6 +325,9 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    setTimeout(function(){
+      func(arguments.slice(2,arguments.length));
+    },wait);
   };
 
 
@@ -313,6 +342,18 @@
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+    var cloneArray = [];
+    var randPoses = [];
+    // generate new array?
+    // Push into new array for a random number, make sure random num isn't repeated
+    while (cloneArray.length != array.length){
+      var randPos = Math.floor(Math.random() * (array.length));
+      if (!_.contains(randPoses,randPos)){
+        randPoses.push(randPos);
+        cloneArray.push(array[randPos]);
+      }
+    }
+    return cloneArray;
   };
 
 
