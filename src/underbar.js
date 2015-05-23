@@ -213,29 +213,14 @@
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
-    // var someTrue = false;
-    // _.each(collection,function(item){
-    //   if (iterator(item)) someTrue = true;
-    // });
-    // return someTrue;
-
-    // var anyTrue = false;
-
-    // var someTrue = _.every(collection,function(item){
-    //   if (iterator(item))
-    //     anyTrue = true;
-    // });
-    // return someTrue;
-    if (iterator == undefined){ // no function specified
-      return !_.contains(collection,false); // if find false in array return false 
+    if (iterator === undefined){
+      return _.contains(collection,true);
     }
-    return _.reduce(collection,function(notAllTrue,item){
-      if (iterator(item)){ // goes through all items in array to see if true
-        console.log("iterator(item) == true");
-        return true;
-      }
-    },false)
-    
+    var someTrue = false;
+    _.each(collection,function(item){
+      if (iterator(item)) someTrue = true;
+    });
+    return someTrue;
   };
 
 
