@@ -199,7 +199,7 @@
       return !_.contains(collection,false); // if find false in array return false 
     }
     return _.reduce(collection,function(notAllTrue,item){
-      if (!notAllTrue){ // checks to see if all are not true, then returns false if one element dissents
+      if (!notAllTrue){ // accumulated truth value that tells if all are true or not
         return false;
       }
       if (iterator(item)){ // goes through all items in array to see if true
