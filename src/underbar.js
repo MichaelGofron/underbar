@@ -325,8 +325,12 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    var args = [];
+    for (var i = 2; i < arguments.length; i++){
+      args.push(arguments[i]);
+    }
     setTimeout(function(){
-      func(arguments.slice(2,arguments.length));
+      func.apply(this,args);
     },wait);
   };
 
@@ -353,7 +357,13 @@
         cloneArray.push(array[randPos]);
       }
     }
-    return cloneArray;
+    // must check to make sure that randomly did not generate the same array
+    var reshuffle = false;
+    var origStr = array.join(','); var cloneStr = cloneArray.join(',');
+    if (origStr == cloneStr)
+      return _.shuffle(array);
+    else
+      return cloneArray;
   };
 
 
